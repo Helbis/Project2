@@ -1,5 +1,9 @@
 #include <stdio>
 
+//Random number generation
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 #include "matrix.hpp"
 

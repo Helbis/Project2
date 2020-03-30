@@ -1,3 +1,6 @@
+#define TOP_LIMIT_OF_NUMBER 100
+
+
 class Matrix{
 	private:
 		int cols, rows;					//Number of rows & columns
@@ -20,3 +23,92 @@ class Matrix{
 		operator *=(Matrix other);		//Multiply matrix by the other one
 		
 };
+
+
+//Definitions
+
+Matrix::Matrix(void){
+	rows = cols = 0;
+}
+
+
+Matrix::Matrix(Matrix other){
+	//Clear matrix
+	data.clear();
+
+	rows = other.getRow();
+	cols = other.getColumn();
+
+	for(int i=0; i<cols; i++){
+		for(int j=0; j<rows; j++){
+			data.push_back(other[i*cols + j]); 
+		}
+	}	
+}
+
+
+Matrix::Matrix(int r, int c){
+	rows = r;
+	cols = c;
+
+	/* initialize random seed: */
+	srand(time(NULL));	
+
+	for(int i=0; i<cols; i++){
+		for(int j=0; j<rows; j++){
+			//Fill with random numbers from <0, 99>
+			data.push_back(rand() % TOP_LIMIT_OF_NUMBER);
+		}
+	}
+}
+
+
+Matrix::~Matrix(void){
+
+}
+
+
+//Functions
+Matrix::operator =(Matrix other){
+
+}
+
+
+Matrix::operator <<(void){
+
+}
+
+
+Matrix::operator +(Matrix other){
+
+}
+
+
+Matrix::operator -(Matrix other){
+
+}
+
+
+Matrix::operator *(Matrix other){
+
+}
+
+
+Matrix::operator *(int var){
+
+}
+
+
+Matrix::operator +=(Matrix other){
+
+}
+
+
+Matrix::operator -=(Matrix other){
+
+}
+
+
+Matrix::operator *=(Matrix other){
+
+}
