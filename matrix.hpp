@@ -12,15 +12,15 @@ class Matrix{
 		Matrix(int r, int c);			//Matrix with random values
 		~Matrix(void);
 
-		operator =(Matrix other);		//Assign to the matrix other one
-		operator <<(void);				//Print matrix row by row
-		operator +(Matrix other);		//Add to matrix another matrix
-		operator -(Matrix other);		//Subtract from matrix another matrix
-		operator *(Matrix other);		//Multiply matrix by matrix, give back new matrix
-		operator *(int var);			//Multiply matrix by a scalar 
-		operator +=(Matrix other);		//Add to the current matrix other one
-		operator -=(Matrix other);		//Subtract from matrix other one
-		operator *=(Matrix other);		//Multiply matrix by the other one
+		void operator =(Matrix other);		//Assign to the matrix other one
+		std::string operator <<(void);		//Print matrix row by row
+		Matrix operator +(Matrix other);	//Add to matrix another matrix
+		Matrix operator -(Matrix other);	//Subtract from matrix another matrix
+		Matrix operator *(Matrix other);	//Multiply matrix by matrix, give back new matrix
+		Matrix operator *(int var);			//Multiply matrix by a scalar 
+		void operator +=(Matrix other);		//Add to the current matrix other one
+		void operator -=(Matrix other);		//Subtract from matrix other one
+		void operator *=(Matrix other);		//Multiply matrix by the other one
 		
 };
 
@@ -29,6 +29,8 @@ class Matrix{
 
 Matrix::Matrix(void){
 	rows = cols = 0;
+
+	data.shrink_to_fit();
 }
 
 
@@ -44,6 +46,8 @@ Matrix::Matrix(Matrix other){
 			data.push_back(other[i*cols + j]); 
 		}
 	}	
+	
+	data.shrink_to_fit();
 }
 
 
@@ -60,6 +64,8 @@ Matrix::Matrix(int r, int c){
 			data.push_back(rand() % TOP_LIMIT_OF_NUMBER);
 		}
 	}
+
+	data.shrink_to_fit();
 }
 
 
@@ -69,46 +75,46 @@ Matrix::~Matrix(void){
 
 
 //Functions
-Matrix::operator =(Matrix other){
+void Matrix::operator =(Matrix other){
 
 }
 
 
-Matrix::operator <<(void){
+std::string Matrix::operator <<(void){
 
 }
 
 
-Matrix::operator +(Matrix other){
+Matrix Matrix::operator +(Matrix other){
 
 }
 
 
-Matrix::operator -(Matrix other){
+Matrix Matrix::operator -(Matrix other){
 
 }
 
 
-Matrix::operator *(Matrix other){
+Matrix Matrix::operator *(Matrix other){
 
 }
 
 
-Matrix::operator *(int var){
+Matrix Matrix::operator *(int var){
 
 }
 
 
-Matrix::operator +=(Matrix other){
+void Matrix::operator +=(Matrix other){
 
 }
 
 
-Matrix::operator -=(Matrix other){
+void Matrix::operator -=(Matrix other){
 
 }
 
 
-Matrix::operator *=(Matrix other){
+void Matrix::operator *=(Matrix other){
 
 }
