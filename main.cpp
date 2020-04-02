@@ -1,4 +1,5 @@
-#include <stdio>
+#include <iostream>
+#include <vector>
 
 //Random number generation
 #include <stdio.h>      /* printf, scanf, puts, NULL */

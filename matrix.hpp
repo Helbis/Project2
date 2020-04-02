@@ -8,23 +8,26 @@ class Matrix{
 
 	public:
 		Matrix(void);					//Matrix 0x0 -> NULL
-		Matrix(Matrix other);			//Matrix copied from other
+		Matrix(Matrix &other);			//Matrix copied from other
 		Matrix(int r, int c);			//Matrix with random values
 		~Matrix(void);
 
 
 		//Getters
-		int getRow(void);
-		int getCol(void);
-		int get_rawData(void);	
+		std::vector<int> getRow(int i);
+		std::vector<int> getCol(int i);
+		int getRowNum(void);
+		int getColNum(void);
+		std::vector<int> &get_rawData(void);	
 
 		//Setters
-		void setRow(int num);
-		void setCol(int num);
+		void setRowNum(int num);
+		void setColNum(int num);
 
 		//Utility funcs
-		int operator [](int i); 			//Returns a specific part of data
-
+		int &operator [](int i); 			//Returns a specific part of data
+		void shrink_to_fit(void);			//Inherits from vector class
+		void push_back(int num);			//Inherits from vector class
 
 		/*
 		For matrix algebra I used:
@@ -33,11 +36,11 @@ class Matrix{
 		*/
 		
 		void operator =(Matrix other);		//Assign to the matrix other one
-		std::string operator <<(void);		//Print matrix row by row
+		friend std::ostream& operator <<(std::ostream& output, Matrix& obj);
 		Matrix operator +(Matrix other);	//Add to matrix another matrix
 		Matrix operator -(Matrix other);	//Subtract from matrix another matrix
 		Matrix operator *(Matrix other);	//Multiply matrix by matrix, give back new matrix
-		Matrix operator *(int var);			//Multiply matrix by a scalar 
+		void operator *(int var);			//Multiply matrix by a scalar 
 		void operator +=(Matrix other);		//Add to the current matrix other one
 		void operator -=(Matrix other);		//Subtract from matrix other one
 		void operator *=(Matrix other);		//Multiply matrix by the other one
@@ -54,12 +57,12 @@ Matrix::Matrix(void){
 }
 
 
-Matrix::Matrix(Matrix other){
+Matrix::Matrix(Matrix &other){
 	//Clear matrix
 	data.clear();
 
-	rows = other.getRow();
-	cols = other.getColumn();
+	rows = other.getRowNum();
+	cols = other.getColNum();
 
 	for(int i=0; i<cols; i++){
 		for(int j=0; j<rows; j++){
@@ -78,7 +81,7 @@ Matrix::Matrix(int r, int c){
 	/* initialize random seed: */
 	srand(time(NULL));	
 
-	for(int i=0; i<data.size(); i++){
+	for(size_t i=0; i<data.size(); i++){
 		//Fill with random numbers from <0, 99>
 		data.push_back(rand() % TOP_LIMIT_OF_NUMBER);
 	}
@@ -92,41 +95,103 @@ Matrix::~Matrix(void){
 }
 
 
+//Getters
+
+std::vector<int> Matrix::getRow(int i){
+	std::vector<int> result(cols);
+	
+	for(int j=0; j<cols; j++){
+		result[j] = data[i*cols + j];
+	}
+
+	result.shrink_to_fit();
+	return result;
+}
+
+
+std::vector<int> Matrix::getCol(int j){
+	std::vector<int> result(rows);
+	
+	for(int i=0; i<rows; i++){
+		result[i] = data[i*cols + j];
+	}
+
+	result.shrink_to_fit();
+	return result;
+}
+
+	
+int Matrix::getRowNum(void){
+	return rows;
+}
+
+int Matrix::getColNum(void){
+	return cols;
+}
+
+std::vector<int> &Matrix::get_rawData(void){
+	return data;
+}
+
+
+//Setters
+void Matrix::setRowNum(int num){
+	rows = num;
+}
+
+void Matrix::setColNum(int num){
+	cols = num;
+}
+
+
+//Utility funcs
+int &Matrix::operator [](int i){
+	return data[i];
+}
+
+
+void Matrix::shrink_to_fit(void){
+	data.shrink_to_fit();
+}
+
+
+void Matrix::push_back(int num){
+	data.push_back(num);
+}
+
+
 //Functions
 void Matrix::operator =(Matrix other){
 	data.clear();	
 
-	rows = other.getRow();
-	cols = other.getCol();
+	rows = other.getRowNum();
+	cols = other.getColNum();
 
 	data = other.get_rawData();
 
 	data.shrink_to_fit();
 }
 
-
-std::string Matrix::operator <<(void){
-	std::string result;
-
-	for(int i=0; i<rows; i++){
-		for(int j=0; j<cols; j++){
-			result.push_back(std::to_string(data[i*cols + j) + ", ");
+std::ostream& operator <<(std::ostream& output, Matrix& obj){
+	for(int i=0; i<obj.getRowNum(); i++){
+		for(int j=0; j<obj.getColNum(); j++){
+			output << std::to_string(obj[i*obj.getColNum() + j]) + ", ";
 		}
 		
-		result.push_back("\n");
+		output << "\n";	
 	}
 
-	return result;
+	return output;
 }
 
 
 Matrix Matrix::operator +(Matrix other){
 	Matrix result;
 
-	if(rows == other.getRow() and cols == other.getCols()){
+	if(rows == other.getRowNum() and cols == other.getColNum()){
 		//Add element to element
-		for(int i=0; i<data.size(); i++){
-			resultpush_back(data[i] + other[i]);
+		for(size_t i=0; i<data.size(); i++){
+			result.push_back(data[i] + other[i]);
 		}		
 	}else{
 		//Unable to add matrices
@@ -140,9 +205,9 @@ Matrix Matrix::operator +(Matrix other){
 Matrix Matrix::operator -(Matrix other){
 	Matrix result;
 
-	if(rows == other.getRow() and cols == other.getCols()){
+	if(rows == other.getRowNum() and cols == other.getColNum()){
 		//Subtract element from element
-		for(int i=0; i<data.size(); i++){
+		for(size_t i=0; i<data.size(); i++){
 			result.push_back(data[i] - other[i]);
 		}		
 	}else{
@@ -157,11 +222,16 @@ Matrix Matrix::operator -(Matrix other){
 Matrix Matrix::operator *(Matrix other){
 	Matrix result;
 
-	if(rows == other.getCols() and cols == other.getRow()){
+	if(cols == other.getRowNum()){
+		result.setRowNum(rows);
+		result.setColNum(other.getColNum());		
+
 		//Add element to element
 		for(int i=0; i<rows; i++){
 			for(int j=0; j<cols; j++){
-				//Row column rule	
+				for(int k=0; k<other.getRowNum(); k++){
+					result[i*other.getColNum() + k] += data[i*cols + j] * other[j*other.getColNum() + k];
+				}	
 			}
 		}		
 	}else{
@@ -173,18 +243,18 @@ Matrix Matrix::operator *(Matrix other){
 }
 
 
-Matrix Matrix::operator *(int var){
-	for(int i=0; i<data.size(); i++){
+void Matrix::operator *(int var){
+	for(size_t i=0; i<data.size(); i++){
 		data[i] *= var;
 	}
 }
 
 
 void Matrix::operator +=(Matrix other){
-	if(rows == other.getRow() and cols == other.getCols()){
+	if(rows == other.getRowNum() and cols == other.getColNum()){
 		//Add to this matrix
 
-		for(int i=0; i<data.size(); i++){
+		for(size_t i=0; i<data.size(); i++){
 			data[i] += other[i];
 		}
 
@@ -195,10 +265,36 @@ void Matrix::operator +=(Matrix other){
 
 
 void Matrix::operator -=(Matrix other){
+	if(rows == other.getRowNum() and cols == other.getColNum()){
+		//Subtract from this matrix
+
+		for(size_t i=0; i<data.size(); i++){
+			data[i] -= other[i];
+		}
+
+	}else{
+		//Do nothing
+	}
 
 }
 
 
 void Matrix::operator *=(Matrix other){
-	
+	Matrix result(rows, other.getColNum());
+
+	if(cols == other.getRowNum()){
+		for(int i=0; i<rows; i++){
+			for(int j=0; j<cols; j++){
+				for(int k=0; k<other.getRowNum(); k++){
+					result[i*other.getColNum() + k] += this->data[i*cols + j] * other[j*other.getColNum() + k];
+				}	
+			}
+		}		
+	}else{
+		//Unable to multiply matrices
+	}
+
+	this->data.swap(result.get_rawData());
+	this->data.shrink_to_fit();
+	this->setColNum(other.getColNum());
 }
