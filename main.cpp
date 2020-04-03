@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <valarray>
 
 //Random number generation
 #include <stdio.h>      /* printf, scanf, puts, NULL */

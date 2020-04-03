@@ -4,7 +4,7 @@
 class Matrix{
 	private:
 		int cols, rows;					//Number of rows & columns
-		std::vector<int> data;			//Data accessed with [i][j] where it's actually (i*cols + j)
+		std::valarray<int> data;			//Data accessed with [i][j] where it's actually (i*cols + j)
 
 	public:
 		Matrix(void);					//Matrix 0x0 -> NULL
