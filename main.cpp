@@ -15,11 +15,10 @@
 int main(int argc, char* argv[]){
 
 
-	/*
 	std::valarray<int> v1(1, 4);
 	std::valarray<int> v2(2, 2);
 	std::valarray<int> v3 = v1;
-	v3 += v2;
+	v3 *= v2;
 	
 	for(size_t i=0; i<v1.size(); i++){
 		std::cout << v1[i] << ", ";
@@ -37,7 +36,6 @@ int main(int argc, char* argv[]){
 
 	
 	std::cout << std::endl;
-	*/
 
 	return 0;
 }
