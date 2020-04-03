@@ -7,6 +7,9 @@
 #include <time.h>       /* time */
 
 #include "matrix.hpp"
+#include "matrixG.hpp"
+#include "matrixC.hpp"
+#include "matrixD.hpp"
 
 
 int main(int argc, char* argv[]){
