@@ -12,4 +12,4 @@ class MatrixG : public Matrix{
 };
 
 
-#endif MATRIX_G
+#endif 
