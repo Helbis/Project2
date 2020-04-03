@@ -28,9 +28,6 @@ class Matrix{
 		void resize(int num){ data.resize(num); }
 		void resize(int r, int c){ data.resize(r*c); rows=r; cols=c; }
 
-		//Utility funcs
-
-
 
 		/*
 		For matrix algebra I used:
@@ -84,12 +81,10 @@ class Matrix{
 
 //Definitions
 Matrix::Matrix(Matrix &other){
-	//Clear matrix
-	data.resize(other.get_rawSize());
+	data.resize(other.get_rawSize()); //Clear data
 
 	rows = other.getRowNum();
 	cols = other.getColNum();
-	
 	data = other.get_rawData();
 }
 
@@ -97,10 +92,9 @@ Matrix::Matrix(Matrix &other){
 Matrix::Matrix(int r, int c){
 	rows = r;
 	cols = c;
-	data.resize(r * c);
+	data.resize(r, c);
 
-	/* initialize random seed: */
-	srand(time(NULL));	
+	srand(time(NULL));	// initialize random seed
 
 	for(size_t i=0; i<data.size(); i++){
 		//Fill with random numbers from <0, 99>
@@ -140,16 +134,12 @@ std::valarray<int> Matrix::getCol(int j){
 //Setters
 
 
-//Utility funcs
-
-
 //Functions
 void Matrix::operator =(Matrix other){
 	data.resize(other.get_rawSize());	
 
 	rows = other.getRowNum();
 	cols = other.getColNum();
-
 	data = other.get_rawData();
 }
 
@@ -186,9 +176,7 @@ Matrix Matrix::operator *(Matrix other){
 	Matrix result;
 
 	if(cols == other.getRowNum()){
-		result.setRowNum(rows);
-		result.setColNum(other.getColNum());
-		result.resize(rows * other.getColNum());
+		result.resize(rows, other.getColNum());
 
 		for(int i=0; i<this->getRowNum(); i++){
 			for(int j=0; j<other.getColNum(); j++){
@@ -207,9 +195,7 @@ void Matrix::operator *=(Matrix other){
 	Matrix result;
 
 	if(cols == other.getRowNum()){
-		result.setRowNum(rows);
-		result.setColNum(other.getColNum());
-		result.resize(rows * other.getColNum());
+		result.resize(rows, other.getColNum());
 
 		for(int i=0; i<this->getRowNum(); i++){
 			for(int j=0; j<other.getColNum(); j++){
