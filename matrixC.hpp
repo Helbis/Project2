@@ -3,14 +3,9 @@
 
 
 class MatrixC : public Matrix{
-	private:
-
-
 	public:
-		MatrixC(void){ Matrix(); }
-		MatrixC(int n){ Matrix(n, n); }
-		
-
+		MatrixC(void) : Matrix(){}
+		MatrixC(int n) : Matrix(n, n){}
 };
 
 

@@ -4,15 +4,20 @@
 #define TOP_LIMIT_OF_NUMBER 100
 
 
+enum commands : int{
+	CLEAR
+};
+
+
 class Matrix{
 	private:
 		size_t cols, rows;					//Number of rows & columns
 		std::valarray<int> data;	
 
 	public:
-		Matrix(void){ this->resize(0, 0); }	//Matrix 0x0 -> NULL
-		Matrix(Matrix &other);			//Matrix copied from other
-		Matrix(size_t r, size_t c);			//Matrix with random values
+		Matrix(void){ this->resize(0, 0); }		//Matrix 0x0 -> NULL
+		Matrix(Matrix &other);					//Matrix copied from other
+		Matrix(size_t r, size_t c);				//Matrix with random values
 		Matrix(size_t r, size_t c, std::valarray<int> va){ this->resize(r, c); data=va; }
 		~Matrix(void);
 
@@ -28,6 +33,9 @@ class Matrix{
 		//Setters
 		void setRowNum(size_t num){ rows = num; }
 		void setColNum(size_t num){ cols = num; }
+		void setData(int COMMAND);								//Set data with specific command
+		void setData(size_t i, size_t j, int d);				//Set data to specific value
+		void setData(std::valarray<int> va){ data = va; }		//Set data to given valarray
 		void resize(size_t num){ data.resize(num); }
 		void resize(size_t r, size_t c){ data.resize(r*c); rows=r; cols=c; }
 
@@ -39,7 +47,7 @@ class Matrix{
 		
 		//Operator overloading
 		void operator =(Matrix other);		//Assign to the matrix other one
-		void operator =(std::valarray<int> va){ data.resize(va.size()); data = va; }	
+		void operator =(std::valarray<int> va){ this->resize(va.size()); this->setData(va); }	
 		int &operator [](size_t i){ return data[i]; }	
 		int &operator ()(size_t i, size_t j){ return data[i*cols + j]; }	
 		Matrix operator +(Matrix other);	//Add to matrix another matrix
@@ -80,6 +88,10 @@ class Matrix{
 
 		//Friends of Matrix
 		friend std::ostream& operator <<(std::ostream& output, Matrix& obj);
+
+
+		//Some additional func
+		bool isEven(size_t a){ return (a % 2 == 0); }
 };
 
 
@@ -134,6 +146,17 @@ std::valarray<int> Matrix::getCol(size_t j){
 
 
 //Setters
+void Matrix::setData(int COMMAND){
+	if(COMMAND == CLEAR){
+		this->resize(0);
+		this->resize(0, 0);
+	}
+}
+
+
+void Matrix::setData(size_t i, size_t j, int d){
+	data[i*cols + j] = d;
+}
 
 
 //Functions
