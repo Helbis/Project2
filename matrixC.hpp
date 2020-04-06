@@ -3,11 +3,13 @@
 
 
 class MatrixC : public Matrix{
-	public:
-
-
 	private:
 
+
+	public:
+		MatrixC(void){ Matrix(); }
+		MatrixC(int n){ Matrix(n, n); }
+		
 
 };
 

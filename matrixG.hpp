@@ -3,12 +3,11 @@
 
 
 class MatrixG : public Matrix{
-	public:
-
-
 	private:
 
 
+	public:
+		
 };
 
 

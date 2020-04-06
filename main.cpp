@@ -13,29 +13,19 @@
 
 
 int main(int argc, char* argv[]){
-
-
-	std::valarray<int> v1(1, 4);
-	std::valarray<int> v2(2, 2);
-	std::valarray<int> v3 = v1;
-	v3 *= v2;
 	
-	for(size_t i=0; i<v1.size(); i++){
-		std::cout << v1[i] << ", ";
-	}
-
-	std::cout << std::endl;	
-	for(size_t i=0; i<v2.size(); i++){
-		std::cout << v2[i] << ", ";
-	}
-
-	std::cout << std::endl;
-	for(size_t i=0; i<v3.size(); i++){
-		std::cout << v3[i] << ", ";
-	}
-
+	Matrix m0;
+	std::cout << "m0\n" << m0 << std::endl;
 	
-	std::cout << std::endl;
+	Matrix m1(2, 2);
+	std::cout << "m1\n" << m1 << std::endl;
+
+	Matrix m2(m1);
+	std::cout << "m2\n" << m2 << std::endl;
+
+	std::valarray<int> temp(1, 6);
+	Matrix m3(3, 2, temp);
+	std::cout << "m3\n" << m3 << std::endl;
 
 	return 0;
 }
