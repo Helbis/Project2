@@ -2,14 +2,14 @@
 #define MATRIX_D
 
 
-class MatrixD : public MatrixC{
+class MatrixTD : public MatrixTC{
 	public:
-		MatrixD(void) : MatrixC(){}
-		MatrixD(size_t n);
+		MatrixTD(void) : MatrixTC(){}
+		MatrixTD(size_t n);
 };
 
 
-MatrixD::MatrixD(size_t n) : MatrixC(n){
+MatrixTD::MatrixTD(size_t n) : MatrixTC(n){
 	for(size_t i=0; i<n; i++){
 		for(size_t j=0; j<n; j++){
 			if(i != j){

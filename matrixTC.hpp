@@ -2,10 +2,10 @@
 #define MATRIX_C
 
 
-class MatrixC : public Matrix{
+class MatrixTC : public MatrixT{
 	public:
-		MatrixC(void) : Matrix(){}
-		MatrixC(int n) : Matrix(n, n){}
+		MatrixTC(void) : MatrixT(){}
+		MatrixTC(int n) : MatrixT(n, n){}
 };
 
 

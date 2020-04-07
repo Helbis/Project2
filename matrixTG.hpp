@@ -1,16 +1,16 @@
-#ifndef MATRIX_G
-#define MATRIX_G
+#ifndef MATRIXT_G
+#define MATRIXT_G
 
 
-class MatrixG : public Matrix{
+class MatrixTG : public MatrixT{
 	public:
-		MatrixG(void) : Matrix(){}
-		MatrixG(MatrixG &other) : Matrix(other){}					//Matrix copied from other
-		MatrixG(size_t r, size_t c);
-		MatrixG(size_t r, size_t c, std::valarray<int> va);
+		MatrixTG(void) : MatrixT(){}
+		MatrixTG(MatrixTG &other) : MatrixT(other){}					//MatrixT copied from other
+		MatrixTG(size_t r, size_t c);
+		MatrixTG(size_t r, size_t c, std::valarray<int> va);
 };
 
-MatrixG::MatrixG(size_t r, size_t c) : Matrix(r, c){
+MatrixTG::MatrixTG(size_t r, size_t c) : MatrixT(r, c){
 	for(size_t i=0; i<r; i++){
 		for(size_t j=0; j<c; j++){
 			if(!this->isEven(i+j)){
@@ -20,7 +20,7 @@ MatrixG::MatrixG(size_t r, size_t c) : Matrix(r, c){
 	}
 }
 
-MatrixG::MatrixG(size_t r, size_t c, std::valarray<int> va) : Matrix(r, c, va){
+MatrixTG::MatrixTG(size_t r, size_t c, std::valarray<int> va) : MatrixT(r, c, va){
 	for(size_t i=0; i<r; i++){
 		for(size_t j=0; j<c; j++){
 			if(!this->isEven(i+j)){

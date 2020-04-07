@@ -1,5 +1,5 @@
-#ifndef MATRIX_HPP
-#define MATRIX_HPP
+#ifndef MATRIXT_HPP
+#define MATRIXT_HPP
 
 #define TOP_LIMIT_OF_NUMBER 100
 
@@ -9,17 +9,17 @@ enum commands : int{
 };
 
 
-class Matrix{
+class MatrixT{
 	private:
 		size_t cols, rows;					//Number of rows & columns
 		std::valarray<int> data;	
 
 	public:
-		Matrix(void){ this->resize(0, 0); }		//Matrix 0x0 -> NULL
-		Matrix(Matrix &other);					//Matrix copied from other
-		Matrix(size_t r, size_t c);				//Matrix with random values
-		Matrix(size_t r, size_t c, std::valarray<int> va){ this->resize(r, c); data=va; }
-		~Matrix(void);
+		MatrixT(void){ this->resize(0, 0); }		//MatrixT 0x0 -> NULL
+		MatrixT(MatrixT &other);					//MatrixT copied from other
+		MatrixT(size_t r, size_t c);				//MatrixT with random values
+		MatrixT(size_t r, size_t c, std::valarray<int> va){ this->resize(r, c); data=va; }
+		~MatrixT(void){ /* Empty */ }
 
 
 		//Getters
@@ -34,7 +34,7 @@ class Matrix{
 		void setRowNum(size_t num){ rows = num; }
 		void setColNum(size_t num){ cols = num; }
 		void setData(int COMMAND);								//Set data with specific command
-		void setData(size_t i, size_t j, int d);				//Set data to specific value
+		void setData(size_t i, size_t j, int d){ data[i*cols + j] = d; }	//Set data to specific value
 		void setData(std::valarray<int> va){ data = va; }		//Set data to given valarray
 		void resize(size_t num){ data.resize(num); }
 		void resize(size_t r, size_t c){ data.resize(r*c); rows=r; cols=c; }
@@ -42,26 +42,26 @@ class Matrix{
 
 		/*
 		For matrix algebra I used:
-		https://en.wikipedia.org/wiki/Matrix_(mathematics)
+		https://en.wikipedia.org/wiki/MatrixT_(mathematics)
 		*/
 		
 		//Operator overloading
-		void operator =(Matrix other);		//Assign to the matrix other one
+		void operator =(MatrixT other);		//Assign to the matrix other one
 		void operator =(std::valarray<int> va){ this->resize(va.size()); this->setData(va); }	
 		int &operator [](size_t i){ return data[i]; }	
 		int &operator ()(size_t i, size_t j){ return data[i*cols + j]; }	
-		Matrix operator +(Matrix other);	//Add to matrix another matrix
-		Matrix operator -(Matrix other);	//Subtract from matrix another matrix
-		Matrix operator *(Matrix other);	//Multiply matrix by matrix, give back new matrix
+		MatrixT operator +(MatrixT other);	//Add to matrix another matrix
+		MatrixT operator -(MatrixT other);	//Subtract from matrix another matrix
+		MatrixT operator *(MatrixT other);	//Multiply matrix by matrix, give back new matrix
 		void operator *(int var){ data *= var; }	//Multiply matrix by a scalar 
-		void operator +=(Matrix other){ data += other.get_rawData(); }		//Add to the current matrix other one
-		void operator -=(Matrix other){ data -= other.get_rawData(); }		//Subtract from matrix other one
-		void operator *=(Matrix other);		//Multiply matrix by the other one
+		void operator +=(MatrixT other){ data += other.get_rawData(); }		//Add to the current matrix other one
+		void operator -=(MatrixT other){ data -= other.get_rawData(); }		//Subtract from matrix other one
+		void operator *=(MatrixT other);		//Multiply matrix by the other one
 		void transpose(void);		
 
 		
 		//Some funcs from valarray
-		//Matrix apply(int func(int)){ return Matrix(this->rows, this->cols, data.apply(func)); }
+		//MatrixT apply(int func(int)){ return MatrixT(this->rows, this->cols, data.apply(func)); }
 		
 
 		//Math fanctions from valarray
@@ -86,8 +86,8 @@ class Matrix{
 		void tanh(void){ std::tanh(data); }
 			
 
-		//Friends of Matrix
-		friend std::ostream& operator <<(std::ostream& output, Matrix& obj);
+		//Friends of MatrixT
+		friend std::ostream& operator <<(std::ostream& output, MatrixT& obj);
 
 
 		//Some additional func
@@ -96,7 +96,7 @@ class Matrix{
 
 
 //Definitions
-Matrix::Matrix(Matrix &other){
+MatrixT::MatrixT(MatrixT &other){
 	data.resize(other.get_rawSize()); //Clear data
 
 	rows = other.getRowNum();
@@ -105,7 +105,7 @@ Matrix::Matrix(Matrix &other){
 }
 
 
-Matrix::Matrix(size_t r, size_t c){
+MatrixT::MatrixT(size_t r, size_t c){
 	this->resize(r, c);
 
 	srand(time(NULL));	// initialize random seed
@@ -117,13 +117,8 @@ Matrix::Matrix(size_t r, size_t c){
 }
 
 
-Matrix::~Matrix(void){
-
-}
-
-
 //Getters
-std::valarray<int> Matrix::getRow(size_t i){
+std::valarray<int> MatrixT::getRow(size_t i){
 	std::valarray<int> result(cols);
 	
 	for(size_t j=0; j<cols; j++){
@@ -134,7 +129,7 @@ std::valarray<int> Matrix::getRow(size_t i){
 }
 
 
-std::valarray<int> Matrix::getCol(size_t j){
+std::valarray<int> MatrixT::getCol(size_t j){
 	std::valarray<int> result(rows);
 	
 	for(size_t i=0; i<rows; i++){
@@ -146,7 +141,7 @@ std::valarray<int> Matrix::getCol(size_t j){
 
 
 //Setters
-void Matrix::setData(int COMMAND){
+void MatrixT::setData(int COMMAND){
 	if(COMMAND == CLEAR){
 		this->resize(0);
 		this->resize(0, 0);
@@ -154,20 +149,15 @@ void Matrix::setData(int COMMAND){
 }
 
 
-void Matrix::setData(size_t i, size_t j, int d){
-	data[i*cols + j] = d;
-}
-
-
 //Functions
-void Matrix::operator =(Matrix other){
+void MatrixT::operator =(MatrixT other){
 	this->resize(other.getRowNum(), other.getColNum());
 	data = other.get_rawData();
 }
 
 
-Matrix Matrix::operator +(Matrix other){
-	Matrix result;
+MatrixT MatrixT::operator +(MatrixT other){
+	MatrixT result;
 
 	if(rows == other.getRowNum() and cols == other.getColNum()){
 		//Add element to element
@@ -180,8 +170,8 @@ Matrix Matrix::operator +(Matrix other){
 }
 
 
-Matrix Matrix::operator -(Matrix other){
-	Matrix result;
+MatrixT MatrixT::operator -(MatrixT other){
+	MatrixT result;
 
 	if(rows == other.getRowNum() and cols == other.getColNum()){
 		//Subtract element from element
@@ -194,8 +184,8 @@ Matrix Matrix::operator -(Matrix other){
 }
 
 
-Matrix Matrix::operator *(Matrix other){
-	Matrix result;
+MatrixT MatrixT::operator *(MatrixT other){
+	MatrixT result;
 
 	if(cols == other.getRowNum()){
 		result.resize(rows, other.getColNum());
@@ -213,8 +203,8 @@ Matrix Matrix::operator *(Matrix other){
 }
 
 
-void Matrix::operator *=(Matrix other){
-	Matrix result;
+void MatrixT::operator *=(MatrixT other){
+	MatrixT result;
 
 	if(cols == other.getRowNum()){
 		result.resize(rows, other.getColNum());
@@ -233,7 +223,7 @@ void Matrix::operator *=(Matrix other){
 }
 
 
-void Matrix::transpose(void){
+void MatrixT::transpose(void){
 	std::valarray<int> column(rows);	
 	std::valarray<int> trans(data.size());
 	size_t i = 0;
@@ -249,7 +239,7 @@ void Matrix::transpose(void){
 
 
 //Friends of matrix
-std::ostream& operator <<(std::ostream& output, Matrix& obj){
+std::ostream& operator <<(std::ostream& output, MatrixT& obj){
 	for(size_t i=0; i<obj.getRowNum(); i++){
 		for(size_t j=0; j<obj.getColNum(); j++){
 			output << std::to_string(obj[i*obj.getColNum() + j]) + ", ";

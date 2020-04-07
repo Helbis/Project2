@@ -1,6 +1,6 @@
 CXX = g++
 OPTIONS = -Wall -pedantic
-MODULES = matrix.hpp matrixG.hpp matrixC.hpp matrixD.hpp
+MODULES = matrixT.hpp matrixTG.hpp matrixTC.hpp matrixTD.hpp
 
 
 output: main.cpp $(MODULES)
