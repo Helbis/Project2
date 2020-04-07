@@ -9,7 +9,7 @@ enum commands : int{
 };
 
 
-template<typename T>
+template<typename T=int>
 class MatrixT{
 	private:
 		size_t cols, rows;					//Number of rows & columns

@@ -2,7 +2,7 @@
 #define MATRIX_C
 
 
-template<typename T>
+template<typename T=int>
 class MatrixTC : public MatrixT<T>{
 	public:
 		MatrixTC(void) : MatrixT<T>(){}

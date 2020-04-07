@@ -2,7 +2,7 @@
 #define MATRIXT_G
 
 
-template<typename T>
+template<typename T=int>
 class MatrixTG : public MatrixT<T>{
 	public:
 		MatrixTG(void) : MatrixT<T>(){}
