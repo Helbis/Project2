@@ -2,10 +2,11 @@
 #define MATRIX_C
 
 
-class MatrixTC : public MatrixT{
+template<typename T>
+class MatrixTC : public MatrixT<T>{
 	public:
-		MatrixTC(void) : MatrixT(){}
-		MatrixTC(int n) : MatrixT(n, n){}
+		MatrixTC(void) : MatrixT<T>(){}
+		MatrixTC(int n) : MatrixT<T>(n, n){}
 };
 
 

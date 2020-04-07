@@ -1,5 +1,5 @@
 CXX = g++
-OPTIONS = -Wall -pedantic
+OPTIONS = -Wall -pedantic -std=c++17
 MODULES = matrixT.hpp matrixTG.hpp matrixTC.hpp matrixTD.hpp
 
 

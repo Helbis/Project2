@@ -16,19 +16,18 @@
 int main(int argc, char* argv[]){
 
 	//Testing Matrix class	
-	MatrixT m0;
+	MatrixT<int> m0;
 	std::cout << "m0\n" << m0 << std::endl;
 	
-	MatrixT m1(2, 2);
+	MatrixT<int> m1(2, 2);
 	std::cout << "m1\n" << m1 << std::endl;
 
-	MatrixT m2(m1);
+	MatrixT<int> m2(m1);
 	std::cout << "m2\n" << m2 << std::endl;
 
-	std::valarray<int> temp(1, 6);
-	MatrixT m3(3, 2, temp);
+	std::valarray<double> temp(1, 6);
+	MatrixT<double> m3(3, 2, temp);
 	std::cout << "m3\n" << m3 << std::endl;
-
 
 	return 0;
 }
