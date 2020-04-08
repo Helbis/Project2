@@ -22,6 +22,10 @@ class MatrixT{
 		MatrixT<T>(size_t r, size_t c, std::valarray<T> va){ this->resize(r, c); this->data=va; }
 		~MatrixT(void){ /* Empty */ }
 
+		
+		//Function to override
+		virtual void f(void){ /* Empty here */ }
+	
 
 		//Getters
 		std::valarray<T> getRow(size_t i);
@@ -35,9 +39,9 @@ class MatrixT{
 		void setRowNum(size_t num){ this->rows = num; }
 		void setColNum(size_t num){ this->cols = num; }
 		void setData(int COMMAND);								//Set data with specific command
-		void setData(size_t i, size_t j, T d){ this->data[i*this->cols + j] = d; }	//Set data to specific value
+		void setData(size_t i, size_t j, T d){ this->data[i*this->cols + j] = d; this->f(); }	//Set data to specific value
 		void setData(std::valarray<T> va){ this->data = va; }		//Set data to given valarray
-		void resize(size_t r, size_t c){ this->data.resize(r*c); this->rows=r; this->cols=c; }
+		void resize(size_t r, size_t c){ this->data.resize(r*c); this->rows=r; this->cols=c; this->f() ;}
 
 
 		/*
@@ -47,39 +51,41 @@ class MatrixT{
 		
 		//Operator overloading
 		void operator =(MatrixT<T> other);		//Assign to the matrix other one
-		void operator =(std::valarray<T> va){ this->resize(va.size()); this->setData(va); }	
-		T &operator [](size_t i){ return this->data[i]; }	
-		T &operator ()(size_t i, size_t j){ return this->data[i*this->cols + j]; }	
+		void operator =(std::valarray<T> va){ this->resize(va.size()); this->setData(va); this->f(); }	
+		T &operator [](size_t i){ return this->data[i]; this->f(); }	
+		T &operator ()(size_t i, size_t j){ return this->data[i*this->cols + j]; this->f(); }	
 		MatrixT operator +(MatrixT<T> other);	//Add to matrix another matrix
 		MatrixT operator -(MatrixT<T> other);	//Subtract from matrix another matrix
 		MatrixT operator *(MatrixT<T> other);	//Multiply matrix by matrix, give back new matrix
 		void operator *(T var){ this->data *= var; }	//Multiply matrix by a scalar 
-		void operator +=(MatrixT<T> other){ this->data += other.get_rawData(); }		//Add to the current matrix other one
-		void operator -=(MatrixT<T> other){ this->data -= other.get_rawData(); }		//Subtract from matrix other one
+		void operator +=(MatrixT<T> other){ this->data += other.get_rawData(); this->f(); }		//Add to the current matrix other one
+		void operator -=(MatrixT<T> other){ this->data -= other.get_rawData(); this->f(); }		//Subtract from matrix other one
 		void operator *=(MatrixT<T> other);		//Multiply matrix by the other one
 		void transpose(void);		
 		
+		
+		void apply(T func){ this->data.apply(func); }
 
 		//Math fanctions from valarray
-		void abs(void){ std::abs(this->data); }
+		void abs(void){ std::abs(this->data); this->f(); }
 		//Power funcs
-		void exp(void){ std::exp(this->data); }
-		void log(void){ std::log(this->data); }
-		void log10(void){ std::log10(this->data); }
-		void pow(T exp){ std::pow(this->data, exp); }
-		void pow(std::valarray<T> va_exp){ std::pow(this->data, va_exp); }
-		void sqrt(void){ std::sqrt(this->data); }
+		void exp(void){ std::exp(this->data); this->f(); }
+		void log(void){ std::log(this->data); this->f(); }
+		void log10(void){ std::log10(this->data); this->f(); }
+		void pow(T exp){ std::pow(this->data, exp); this->f(); }
+		void pow(std::valarray<T> va_exp){ std::pow(this->data, va_exp); this->f(); }
+		void sqrt(void){ std::sqrt(this->data); this->f(); }
 		//Trig funcs
-		void sin(void){ std::sin(this->data); }
-		void cos(void){ std::cos(this->data); }
-		void tan(void){ std::tan(this->data); }
-		void asin(void){ std::asin(this->data); }
-		void acos(void){ std::acos(this->data); }
-		void atan(void){ std::atan(this->data); }
-		void atan2(std::valarray<T> va){ std::atan2(this->data, va); }
-		void sinh(void){ std::sinh(this->data); }
-		void cosh(void){ std::cosh(this->data); }
-		void tanh(void){ std::tanh(this->data); }
+		void sin(void){ std::sin(this->data); this->f(); }
+		void cos(void){ std::cos(this->data); this->f(); }
+		void tan(void){ std::tan(this->data); this->f(); }
+		void asin(void){ std::asin(this->data); this->f(); }
+		void acos(void){ std::acos(this->data); this->f(); }
+		void atan(void){ std::atan(this->data); this->f(); }
+		void atan2(std::valarray<T> va){ std::atan2(this->data, va); this->f(); }
+		void sinh(void){ std::sinh(this->data); this->f(); }
+		void cosh(void){ std::cosh(this->data); this->f(); }
+		void tanh(void){ std::tanh(this->data); this->f(); }
 			
 
 		//Friends of MatrixT
@@ -144,6 +150,8 @@ void MatrixT<T>::setData(int COMMAND){
 	if(COMMAND == CLEAR){
 		this->resize(0, 0);
 	}
+	
+	this->f(); 
 }
 
 
@@ -152,6 +160,8 @@ template<typename T>
 void MatrixT<T>::operator =(MatrixT<T> other){
 	this->resize(other.getRowNum(), other.getColNum());
 	this->data = other.get_rawData();
+
+	this->f(); 
 }
 
 
@@ -166,6 +176,7 @@ MatrixT<T> MatrixT<T>::operator +(MatrixT<T> other){
 		//Unable to add matrices
 	}
 
+	this->f(); 
 	return result;	
 }
 
@@ -181,6 +192,7 @@ MatrixT<T> MatrixT<T>::operator -(MatrixT<T> other){
 		//Unable to subtract matrices
 	}
 
+	this->f(); 
 	return result;	
 }
 
@@ -201,6 +213,7 @@ MatrixT<T> MatrixT<T>::operator *(MatrixT<T> other){
 		//Unable to multiply matrices
 	}
 
+	this->f(); 
 	return result;	
 }
 
@@ -221,6 +234,7 @@ void MatrixT<T>::operator *=(MatrixT<T> other){
 		//Unable to multiply matrices
 	}
 
+	this->f(); 
 	this->data.swap(result.get_rawData());
 	this->setColNum(other.getColNum());
 }
