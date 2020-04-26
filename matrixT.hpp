@@ -39,7 +39,7 @@ class MatrixT{
 		void setRowNum(size_t num){ this->rows = num; }
 		void setColNum(size_t num){ this->cols = num; }
 		void setData(int COMMAND);								//Set data with specific command
-		void setData(size_t i, size_t j, T d){ this->data[i*this->cols + j] = d; this->f(); }	//Set data to specific value
+		void setData(size_t i, size_t j, T d){ this->data[i*this->cols + j] = d; }	//Set data to specific value
 		void setData(std::valarray<T> va){ this->data = va; }		//Set data to given valarray
 		void resize(size_t r, size_t c){ this->data.resize(r*c); this->rows=r; this->cols=c; this->f() ;}
 
@@ -63,29 +63,27 @@ class MatrixT{
 		void operator *=(MatrixT<T> other);		//Multiply matrix by the other one
 		void transpose(void);		
 		
-		
-		void apply(T func){ this->data.apply(func); }
 
 		//Math fanctions from valarray
 		void abs(void){ std::abs(this->data); this->f(); }
 		//Power funcs
-		void exp(void){ std::exp(this->data); this->f(); }
-		void log(void){ std::log(this->data); this->f(); }
-		void log10(void){ std::log10(this->data); this->f(); }
-		void pow(T exp){ std::pow(this->data, exp); this->f(); }
-		void pow(std::valarray<T> va_exp){ std::pow(this->data, va_exp); this->f(); }
-		void sqrt(void){ std::sqrt(this->data); this->f(); }
+		void exp(void){ this->setData(std::exp(this->data)); this->f(); }
+		void log(void){ this->setData(std::log(this->data)); this->f(); }
+		void log10(void){ this->setData(std::log10(this->data)); this->f(); }
+		void pow(T exp){ this->setData(std::pow(this->data, exp)); this->f(); }
+		void pow(std::valarray<T> va_exp){ this->setData(std::pow(this->data, va_exp)); this->f(); }
+		void sqrt(void){ this->setData(std::sqrt(this->data)); this->f(); }
 		//Trig funcs
-		void sin(void){ std::sin(this->data); this->f(); }
-		void cos(void){ std::cos(this->data); this->f(); }
-		void tan(void){ std::tan(this->data); this->f(); }
-		void asin(void){ std::asin(this->data); this->f(); }
-		void acos(void){ std::acos(this->data); this->f(); }
-		void atan(void){ std::atan(this->data); this->f(); }
-		void atan2(std::valarray<T> va){ std::atan2(this->data, va); this->f(); }
-		void sinh(void){ std::sinh(this->data); this->f(); }
-		void cosh(void){ std::cosh(this->data); this->f(); }
-		void tanh(void){ std::tanh(this->data); this->f(); }
+		void sin(void){ this->setData(std::sin(this->data)); this->f(); }
+		void cos(void){ this->setData(std::cos(this->data)); this->f(); }
+		void tan(void){ this->setData(std::tan(this->data)); this->f(); }
+		void asin(void){ this->setData(std::asin(this->data)); this->f(); }
+		void acos(void){ this->setData(std::acos(this->data)); this->f(); }
+		void atan(void){ this->setData(std::atan(this->data)); this->f(); }
+		void atan2(std::valarray<T> va){ this->setData(std::atan2(this->data, va)); this->f(); }
+		void sinh(void){ this->setData(std::sinh(this->data)); this->f(); }
+		void cosh(void){ this->setData(std::cosh(this->data)); this->f(); }
+		void tanh(void){ this->setData(std::tanh(this->data)); this->f(); }
 			
 
 		//Friends of MatrixT
@@ -150,8 +148,6 @@ void MatrixT<T>::setData(int COMMAND){
 	if(COMMAND == CLEAR){
 		this->resize(0, 0);
 	}
-	
-	this->f(); 
 }
 
 
@@ -252,6 +248,9 @@ void MatrixT<T>::transpose(void){
 			trans[i+s] = column[s];
 		}
 	}
+
+	this->resize(this->cols, this->rows);	
+	this->setData(trans);
 }
 
 

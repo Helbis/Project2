@@ -1,7 +1,6 @@
 #include <iostream>
 #include <valarray>		/* std::valarray */
 #include <string>		/* std::to_string, std::string */
-#include <boost/lexical_cast.hpp>	/* boost::lexical_cast<string> (any_type)  */
 
 //Random number generation
 #include <stdio.h>      /* NULL */
@@ -18,23 +17,19 @@
 
 int main(int argc, char* argv[]){
 
-	// Declaring float 
-	float f_val = 10.5; 
-  
-	// Declaring int 
-	int i_val = 17; 
-     
-	// lexical_cast() converts a float into string 
-	std::string strf = boost::lexical_cast<std::string>(f_val);  
-     
-	// lexical_cast() converts a int into string 
-	std::string stri = boost::lexical_cast<std::string>(i_val);  
-     
-	// Displaying string converted numbers 
-	std::cout << "The float value in string is : "; 
-	std::cout << strf << std::endl; 
-	std::cout << "The int value in string is : "; 
-	std::cout << stri << std::endl; 
+	Reduce<float> mat(2, 2, {-1.1, 2.0, 1.3, -12.0});
+	MatrixTD<float> pat(2);
 
+	std::cout << "\nmat : \n" << mat;
+	std::cout << "\npat : \n" << pat;
+
+	mat.pow(2);
+	pat.pow(2);
+	std::cout << "\nmat.pow(2) : \n" << mat;
+	std::cout << "\npat.pow(2) : \n" << pat;
+
+	mat += pat;
+	std::cout << "\nresult : \n" << mat;
+	
 	return 0;
 }

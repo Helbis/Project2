@@ -3,7 +3,7 @@
 
 
 template<typename T=int>
-class Reduce : MatrixT<T>{
+class Reduce : public MatrixT<T>{
 	public:
 		Reduce(void) : MatrixT<T>(){ this->f(); } 
 		Reduce(Reduce<T> &other) : MatrixT<T>(other){ this->f(); } 
@@ -13,12 +13,12 @@ class Reduce : MatrixT<T>{
 
 
 		//Function to override
-		void f(void) override { this->apply(Reduce::reduceNum); }
+		void f(void) override { this->setData(this->get_rawData().apply(*(Reduce::reduceNum))); }
 
 		
 		//Original functions	
-		bool isAlright(T num){ return ((num <= 9) and (num >= -9)); }
-		T reduceNum(T num);
+		static bool isAlright(T num){ return ((num >= (T)-9) and (num <= (T)9)); }
+		static T reduceNum(T num);
 };
 
 
@@ -26,21 +26,24 @@ template<typename T>
 T Reduce<T>::reduceNum(T num){
 	std::string str;
 	std::valarray<T> va;
+	str = std::to_string(num);
+	
+	bool negative = str[0] == '-';
 
 	while(not Reduce::isAlright(num)){
 		str = std::to_string(num);
 		va.resize(str.size());
-		
+
 		for(size_t i=0; i<str.size(); i++){
-			va[i] = boost::lexical_cast<T>(str[i]);
-		}
-		
+			if(isdigit(str[i])){
+				va[i] = (T)(str[i] - '0');
+			}
+		}		
+
 		num = va.sum();	
 	}
 
-	return num;
+	return (negative ? -std::abs(num) : std::abs(num));
 }
-
-
 
 #endif
